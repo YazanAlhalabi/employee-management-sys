@@ -9,11 +9,13 @@ import com.myFullstackYazan.employee_management.repositpories.DepartmentRepo;
 import com.myFullstackYazan.employee_management.repositpories.EmployeeRepo;
 import com.myFullstackYazan.employee_management.shared.CustomResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,8 +40,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     return employee;
   }
 
-  public List<Employee> findAll() {
-    return employeeRepo.findAll();
+  public Page<Employee> findAll(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return employeeRepo.findAll(pageable);
   }
 
   public void deleteOne(UUID employeeId) {
@@ -47,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     employee.ifPresent(value -> employeeRepo.deleteById(value.getId()));
   }
- 
+
   @PreAuthorize("@securityUtils.isOwner(#employeeId)")
   public Employee updateOne(UUID employeeId, EmployeeUpdate employee) {
     Employee existingEmployee = employeeRepo.findById(employeeId)

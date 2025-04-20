@@ -5,11 +5,14 @@ import com.myFullstackYazan.employee_management.abstracts.LeaveRequestService;
 import com.myFullstackYazan.employee_management.dtos.EmployeeCreate;
 import com.myFullstackYazan.employee_management.dtos.EmployeeUpdate;
 import com.myFullstackYazan.employee_management.dtos.LeaveRequestCreate;
+import com.myFullstackYazan.employee_management.dtos.PaginatedResponse;
 import com.myFullstackYazan.employee_management.entities.Employee;
 import com.myFullstackYazan.employee_management.entities.LeaveRequest;
 import com.myFullstackYazan.employee_management.shared.GlobalResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +30,29 @@ public class EmployeeController {
   private LeaveRequestService leaveRequestService;
 
   @GetMapping
-  public ResponseEntity<GlobalResponse<List<Employee>>> findAll() {
-    List<Employee> employees = employeeService.findAll();
-    return new ResponseEntity<>(new GlobalResponse<>(employees), HttpStatus.OK);
+  public ResponseEntity<GlobalResponse<PaginatedResponse<Employee>>> findAll(
+      @RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "3") int size,
+      HttpServletRequest request
+  ) {
+    int zeroBasedPage = page - 1;
+    Page<Employee> employees = employeeService.findAll(zeroBasedPage, size);
+
+    String baseUrl = request.getRequestURL().toString();
+    String nextUrl = employees.hasNext() ? String.format("%s?page=%d&size=%d", baseUrl, page + 1, size) : null;
+    String prevUrl = employees.hasPrevious() ? String.format("%s?page=%d&size=%d", baseUrl, page - 1, size) : null;
+
+    var paginatedResponse = new PaginatedResponse<Employee>(
+        employees.getContent(),
+        employees.getNumber(),
+        employees.getTotalPages(),
+        employees.getTotalElements(),
+        employees.hasNext(),
+        employees.hasPrevious(),
+        nextUrl,
+        prevUrl
+    );
+    return new ResponseEntity<>(new GlobalResponse<>(paginatedResponse), HttpStatus.OK);
   }
 
   @GetMapping("/{employeeId}")

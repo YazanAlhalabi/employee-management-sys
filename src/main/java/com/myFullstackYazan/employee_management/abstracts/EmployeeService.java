@@ -3,14 +3,14 @@ package com.myFullstackYazan.employee_management.abstracts;
 import com.myFullstackYazan.employee_management.dtos.EmployeeCreate;
 import com.myFullstackYazan.employee_management.dtos.EmployeeUpdate;
 import com.myFullstackYazan.employee_management.entities.Employee;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface EmployeeService {
   Employee findOne(UUID employeeId);
 
-  List<Employee> findAll();
+  Page<Employee> findAll(int page, int size);
 
   void deleteOne(UUID employeeId);
 
