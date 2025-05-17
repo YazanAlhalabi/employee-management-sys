@@ -50,7 +50,7 @@ public class SecurityConfig {
                   "auth/forgot-password/{username}",
                   "auth/reset-password"
               ).permitAll()
-//              .requestMatchers(HttpMethod.GET, "/employees").hasRole("ADMIN")
+              .requestMatchers(HttpMethod.GET, "/employees").hasRole("ADMIN")
               .requestMatchers(HttpMethod.GET, "/employees/{employeeId}").hasAnyRole("ADMIN", "USER")
               .requestMatchers(HttpMethod.POST, "/employees").hasAnyRole("ADMIN")
               .requestMatchers(HttpMethod.DELETE, "/employees/{employeeId}").hasAnyRole("ADMIN")
