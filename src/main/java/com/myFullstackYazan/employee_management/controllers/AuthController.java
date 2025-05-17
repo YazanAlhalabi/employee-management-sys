@@ -2,6 +2,7 @@ package com.myFullstackYazan.employee_management.controllers;
 
 
 import com.myFullstackYazan.employee_management.dtos.LoginRequest;
+import com.myFullstackYazan.employee_management.dtos.ResetPasswordRequest;
 import com.myFullstackYazan.employee_management.dtos.SignupRequest;
 import com.myFullstackYazan.employee_management.services.AuthService;
 import com.myFullstackYazan.employee_management.shared.GlobalResponse;
@@ -37,4 +38,18 @@ public class AuthController {
     return new ResponseEntity<>(new GlobalResponse<>("Signed Up"), HttpStatus.CREATED);
   }
 
+  @PostMapping("/forgot-password/{username}")
+  public ResponseEntity<GlobalResponse<String>> forgotPassword(@PathVariable String username) {
+
+    authService.initiatePasswordRest(username);
+    return new ResponseEntity<>(new GlobalResponse<>("Password reset email sent!"), HttpStatus.CREATED);
+  }
+
+  @PostMapping("/reset-password")
+  public ResponseEntity<GlobalResponse<String>> resetPassword(
+      @RequestBody ResetPasswordRequest resetPasswordRequest
+  ) {
+    authService.resetPassword(resetPasswordRequest);
+    return new ResponseEntity<>(new GlobalResponse<>("Password reset successfully!"), HttpStatus.CREATED);
+  }
 }

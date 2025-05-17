@@ -47,7 +47,8 @@ public class SecurityConfig {
           auth.requestMatchers(
                   "/auth/singup",
                   "auth/login",
-                  "employees"
+                  "auth/forgot-password/{username}",
+                  "auth/reset-password"
               ).permitAll()
 //              .requestMatchers(HttpMethod.GET, "/employees").hasRole("ADMIN")
               .requestMatchers(HttpMethod.GET, "/employees/{employeeId}").hasAnyRole("ADMIN", "USER")

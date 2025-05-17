@@ -33,7 +33,7 @@ public class UserAccount implements UserDetails {
   @Column(name = "role", nullable = false, length = 20)
   private String role = "USER";
 
-  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @OneToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "employee_id", unique = true, nullable = false)
   private Employee employee;
 
