@@ -74,6 +74,7 @@ public class AuthService {
 
     Map<String, Object> customClaims = new HashMap<>();
     customClaims.put("userId", user.getId());
+    customClaims.put("role", user.getRole());
     return jwtHelper.generateToken(customClaims, user);
   }
 
