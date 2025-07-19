@@ -28,7 +28,7 @@ public class AuthController {
         new GlobalResponse<>(token), HttpStatus.CREATED);
   }
 
-  @PostMapping("/singup")
+  @PostMapping("/signup")
   public ResponseEntity<GlobalResponse<String>> signup(
       @RequestBody SignupRequest signupRequest,
       @RequestParam String token

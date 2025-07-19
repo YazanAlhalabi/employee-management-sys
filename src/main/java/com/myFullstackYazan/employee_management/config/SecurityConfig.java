@@ -45,7 +45,7 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> {
           auth.requestMatchers(
-                  "/auth/singup",
+                  "/auth/signup",
                   "auth/login",
                   "auth/forgot-password/{username}",
                   "auth/reset-password"
