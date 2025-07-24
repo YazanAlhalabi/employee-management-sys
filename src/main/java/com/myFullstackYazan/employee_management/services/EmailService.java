@@ -17,7 +17,7 @@ public class EmailService {
   private String from;
 
   public void sendAccountCreationEmail(String to, String token) {
-    String link = ORIGIN + "/auth/singup?token=" + token;
+    String link = ORIGIN + "/signup?token=" + token;
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom(from);
     message.setTo(to);
@@ -27,7 +27,7 @@ public class EmailService {
   }
 
   public void sendPasswordRestEmail(String to, String token) {
-    String link = ORIGIN + "/auth/reset-password?token=" + token;
+    String link = ORIGIN + "/reset-password?token=" + token;
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom(from);
     message.setTo(to);
